@@ -9,13 +9,13 @@ BEGIN
 {
     if(FNR==NR){ # first file
         nb_sources++
-        #print $1,max_source_links > "prioritized_sources.csv"
+        ##print $1,max_source_links > "prioritized_sources.csv"
 	}
 	else{ # second file
 	    points=10
 	    pop=$23
         #check population level
-        if(pop > 0 && pop <= 10){
+        if(pop > 0 && pop <= 10 ){
             points += 20
         }
         else if(pop > 10 && pop <= 20){
