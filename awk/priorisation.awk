@@ -6,6 +6,7 @@ BEGIN
 	nb_sources=0
 	nb_targets=0
 	#split("23,50,between,1,22|23,500,between,31,41",criteria,"|")
+	#djslqk
 }
 {
     if(FNR==NR){ # first file
@@ -69,7 +70,7 @@ BEGIN
 }
 END
 {
-    point_price = int(sum_points/(max_source_links*nb_sources))
+    point_price = sum_points/(max_source_links*nb_sources)
     for( i = 1 ; i <= nb_targets ; i++)
         print targets[i],points[i]*point_price > "prioritized_targets.csv"
 }
