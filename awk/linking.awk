@@ -1,23 +1,32 @@
 function match(criteria, source, target){
-	# 1st criteria : same ID_LOCALITE and has one RUBRIQUE in common
-
-	# 2nd criteria : same ID_DEPARTEMENT and has one RUBRIQUE in common
-
-	# 3rd criteria : same ID_REGION and has one RUBRIQUE in common
-
-	# 4st criteria : random
-
-	#switch(criteria) {
-  # case 1:instruction1_exécuté_si_vrai1;break;
-	# case 2:instruction_exécuté_si_vrai2;break;
-	# case 3:instruction_exécuté_si_vrai3;break;
-	# default: instruction_exécuté_si_faux;break;
-	#}
-
+	switch(criteria) {
+		# 1st criteria : same ID_LOCALITE and has one RUBRIQUE in common
+		case 1:
+			return source[2]==target[2] && has_list_item_in_common(source[7],target[7],"|");
+		# 2nd criteria : same ID_DEPARTEMENT and has one RUBRIQUE in common
+		case 2:
+			return source[3]==target[3] && has_list_item_in_common(source[7],target[7],"|");
+		# 3rd criteria : same ID_REGION and has one RUBRIQUE in common
+		case 3:
+			return source[4]==target[4] && has_list_item_in_common(source[7],target[7],"|");
+		# 4st criteria : random
+		case 3:
+			return true;
+		default:
+			# Unknown criteria
+			return false;
+	}
 }
-function has_item_in_list(){
-
-
+function has_list_item_in_common(str1,str2,sep){
+	split(str1,array1,sep)
+	split(str2,array2,sep)
+	for(a in array1){
+		for(b in array2){
+			if(a==b)
+				return true;
+		}
+	}
+	return false;
 }
 BEGIN {
 	FS=OFS=";"
