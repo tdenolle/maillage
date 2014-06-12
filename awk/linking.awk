@@ -1,37 +1,55 @@
+function match(criteria, source, target){
+	# 1st criteria : same ID_LOCALITE and has one RUBRIQUE in common
+
+	# 2nd criteria : same ID_DEPARTEMENT and has one RUBRIQUE in common
+
+	# 3rd criteria : same ID_REGION and has one RUBRIQUE in common
+
+	# 4st criteria : random
+
+	#switch(criteria) {
+  # case 1:instruction1_exécuté_si_vrai1;break;
+	# case 2:instruction_exécuté_si_vrai2;break;
+	# case 3:instruction_exécuté_si_vrai3;break;
+	# default: instruction_exécuté_si_faux;break;
+	#}
+
+}
+function has_item_in_list(){
+
+
+}
 BEGIN {
 	FS=OFS=";"
 	# linking rules (field match)
 	split("5|9|11",rules,"|")
-	print "URL_SOURCE;URL_CIBLE"
-		
+	#print "URL_SOURCE;URL_CIBLE"
+	start_time=systime()-1
 }
-function match_field(rule,val1,val2){
-
-
-}
+#NR==FNR #Only true when in the first file
 {
-	if(FNR==NR){ #Only true when in the first file
-		sources[$0]=25 # 25 is the max links number per source
+	if(FNR==NR){ # Source processing (first arg file)
+		sources[$0]=$7 # $7 is the max links number per source
+		#TODO : get the latest field value /
 	}
-	else{ # second file
-		nb_links = 10 # TODO; build priorisation
+else{ # Target Processing (second arg file)
+		nb_links=200 # TODO : get latest field value
 		split($0,t,FS)
-		#print "Linking target :"$1
-		for(r = 1; r <= length(rules) && nb_links > 0; r++ ){	
-			f_idx = rules[r];
+		#if((int(FNR) % 100)==0)
+		printf("[idx:%d][tps:%d][src:%d]Linking target:%s\n",FNR,int(FNR) / ( systime()-start_time  ),length(sources),$1) > "linking.log"
+		for(r = 1; r <= 4 && nb_links > 0; r++ ){ #TODO : deal with criteria array
+			#f_idx = rules[r];
 			#print "Matching field index :"f_idx
 			for(i in sources){
 				split(i,s,FS)
 				if(sources[i]>0 && s[1]!=t[1]){ # Sources is available and  Do not link url with herself
-					if(t[f_idx]==s[f_idx]){
+					if(match(r,s,t)){
 						#print i"****"$0
 						print s[1],t[1]
 						nb_links--
-						if(sources[i] > 1){
-						    sources[i]--
-						}else {
-						    delete sources[i]
-						}
+						sources[i]--
+						if(sources[i]<=0)
+        			delete sources[i]
 					}
 				}
 				if(nb_links<=0)
